@@ -35,7 +35,9 @@ def parseargs_crispritz() -> pyCRISPRitzArgumentParser:
     group = parser_add_variants.add_argument_group("Options")
     group.add_argument("-g", "--genome", type=str, required=True, metavar="GENOME-DIR", help="Path to reference genome folder")
     group.add_argument("-v", "--vcf", type=str, required=True, metavar="VCF-DIR", help="Path to VCF folder")
-    group.add_argument("-j", "--threads", type=int, default=1, nargs="?", metavar="NTHREADS", help="Number of threads used while adding variants. Use '0' to automatically detect and use the maximum number of available threads. Default value: %(default)s")
+    group.add_argument("-o", "--output", type=str, default="variants_genome", metavar="OUTDIR", help="Path to output folder")
+    group.add_argument("-t", "--threads", type=int, default=1, nargs="?", metavar="NTHREADS", help="Number of threads used while adding variants. Use '0' to automatically detect and use the maximum number of available threads. Default value: %(default)s")
+    group.add_argument("--debug", action="store_true", default=False, help="Run pyCRISPRitz add-variants in debug mode")
     return parser
 
 def main(commandline_args: Optional[List[str]] = None) -> None:
