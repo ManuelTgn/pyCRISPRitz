@@ -11,14 +11,24 @@ from time import time, sleep
 
 import sys
 
+
 def parseargs_crispritz() -> pyCRISPRitzArgumentParser:
     parser = pyCRISPRitzArgumentParser(usage=__doc__, add_help=False)
     # general options
     group = parser.add_argument_group("Basic Options")
     group.add_argument("-h", "--help", action="help", help="Show this message and exit")
-    group.add_argument("--version", action="version", help="Display pyCRISPRitz version and exit", version=__version__)
+    group.add_argument(
+        "--version",
+        action="version",
+        help="Display pyCRISPRitz version and exit",
+        version=__version__,
+    )
     # create  different parsers for each command
-    subparsers = parser.add_subparsers(title="Commands", dest="command", description="Type 'pycrispritz <command> -h' to view the help for each command")
+    subparsers = parser.add_subparsers(
+        title="Commands",
+        dest="command",
+        description="Type 'pycrispritz <command> -h' to view the help for each command",
+    )
     # add-variants options
     parser_add_variants = subparsers.add_parser(
         f"{CRISPRITZ_COMMANDS[0]}",  # add-variants
@@ -29,16 +39,50 @@ def parseargs_crispritz() -> pyCRISPRitzArgumentParser:
         "other genetic alterations. The variants data can include SNVs, "
         "insertions, and deletions",
         usage=f"pycrispritz {CRISPRITZ_COMMANDS[0]}",
-        help="Function to incorporate variants data into a FASTA genome "
-        "file",
+        help="Function to incorporate variants data into a FASTA genome " "file",
     )
     group = parser_add_variants.add_argument_group("Options")
-    group.add_argument("-g", "--genome", type=str, required=True, metavar="GENOME-DIR", help="Path to reference genome folder")
-    group.add_argument("-v", "--vcf", type=str, required=True, metavar="VCF-DIR", help="Path to VCF folder")
-    group.add_argument("-o", "--output", type=str, default="variants_genome", metavar="OUTDIR", help="Path to output folder")
-    group.add_argument("-t", "--threads", type=int, default=1, nargs="?", metavar="NTHREADS", help="Number of threads used while adding variants. Use '0' to automatically detect and use the maximum number of available threads. Default value: %(default)s")
-    group.add_argument("--debug", action="store_true", default=False, help="Run pyCRISPRitz add-variants in debug mode")
+    group.add_argument(
+        "-g",
+        "--genome",
+        type=str,
+        required=True,
+        metavar="GENOME-DIR",
+        help="Path to reference genome folder",
+    )
+    group.add_argument(
+        "-v",
+        "--vcf",
+        type=str,
+        required=True,
+        metavar="VCF-DIR",
+        help="Path to VCF folder",
+    )
+    group.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        default="variants_genome",
+        metavar="OUTDIR",
+        help="Path to output folder",
+    )
+    group.add_argument(
+        "-t",
+        "--threads",
+        type=int,
+        default=1,
+        nargs="?",
+        metavar="NTHREADS",
+        help="Number of threads used while adding variants. Use '0' to automatically detect and use the maximum number of available threads. Default value: %(default)s",
+    )
+    group.add_argument(
+        "--debug",
+        action="store_true",
+        default=False,
+        help="Run pyCRISPRitz add-variants in debug mode",
+    )
     return parser
+
 
 def main(commandline_args: Optional[List[str]] = None) -> None:
     try:
@@ -64,5 +108,3 @@ def main(commandline_args: Optional[List[str]] = None) -> None:
 # ---> entry point <--- #
 if __name__ == "__main__":
     main()
-
-

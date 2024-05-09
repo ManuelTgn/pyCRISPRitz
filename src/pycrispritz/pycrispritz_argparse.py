@@ -13,7 +13,13 @@ Methods:
 from utils import CRISPRITZ_COMMANDS
 from version import __version__
 
-from argparse import SUPPRESS, _MutuallyExclusiveGroup, Action, ArgumentParser, HelpFormatter
+from argparse import (
+    SUPPRESS,
+    _MutuallyExclusiveGroup,
+    Action,
+    ArgumentParser,
+    HelpFormatter,
+)
 from typing import Any, Optional, Tuple, Dict, NoReturn
 from colorama import Fore
 
@@ -50,7 +56,9 @@ class pyCRISPRitzArgumentParser(ArgumentParser):
             add_usage: Adds usage information to the help formatter.
         """
 
-        def add_usage(self, usage: str, actions: str, groups: str, prefix: Optional[str] = "None") -> None:
+        def add_usage(
+            self, usage: str, actions: str, groups: str, prefix: Optional[str] = "None"
+        ) -> None:
             """
             Add a custom usage format to the help output.
 
@@ -66,7 +74,7 @@ class pyCRISPRitzArgumentParser(ArgumentParser):
             if usage != SUPPRESS:
                 args = (usage, actions, groups, "")
                 self._add_item(self._format_usage, args)  # define new usage format
-    
+
     def __init__(self, *args: Tuple[str, Any], **kwargs: Dict[Any, Any]) -> None:
         """Initializes the pyCRISPRitzArgumentParser.
 
@@ -76,7 +84,7 @@ class pyCRISPRitzArgumentParser(ArgumentParser):
         """
 
         kwargs["formatter_class"] = self.pyCRISPRitzHelpFormatter
-        # replace default usage string with tool version 
+        # replace default usage string with tool version
         kwargs["usage"] = kwargs["usage"].replace("{version}", __version__)
         super().__init__(*args, **kwargs)
 

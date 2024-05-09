@@ -2,7 +2,14 @@
 """
 
 from pycrispritz_argparse import pyCRISPRitzArgumentParser
-from utils import exception_handler, retrieve_fasta_files, retrieve_vcf_files, read_fasta_header, CRISPRITZ_COMMANDS, ENRICHED_GENOME_DIRS
+from utils import (
+    exception_handler,
+    retrieve_fasta_files,
+    retrieve_vcf_files,
+    read_fasta_header,
+    CRISPRITZ_COMMANDS,
+    ENRICHED_GENOME_DIRS,
+)
 
 from typing import Dict, Tuple
 from argparse import Namespace
@@ -11,7 +18,8 @@ from glob import glob
 import multiprocessing
 import os
 
-class AddVariants():
+
+class AddVariants:
     def __init__(self, parser: pyCRISPRitzArgumentParser, args: Namespace) -> None:
         self._debug = args.debug
         self._init_genome(parser, args.genome)  # initialize genome directory
@@ -21,7 +29,11 @@ class AddVariants():
         self._init_fasta_vcf_dict()  # initialize FASTA - VCF dictionary
 
     def __str__(self) -> str:
-        assert hasattr(self, "_genome") and hasattr(self, "_vcf") and hasattr(self, "_threads")
+        assert (
+            hasattr(self, "_genome")
+            and hasattr(self, "_vcf")
+            and hasattr(self, "_threads")
+        )
         return (
             f"'CRISPRitz {CRISPRITZ_COMMANDS[0]}' parameters:\n"
             f"\t- Genome directory: {self._genome}\n"
@@ -39,8 +51,12 @@ class AddVariants():
         # check whether genomedir contains FASTA files
         dircontent = retrieve_fasta_files(genomedir)
         if not dircontent:
-            parser.error(f"{genomedir} does not contain FASTA files ('fa' or 'fasta' extensions required)")
-        self._genome = os.path.abspath(genomedir)  # avoid potential crash due to location
+            parser.error(
+                f"{genomedir} does not contain FASTA files ('fa' or 'fasta' extensions required)"
+            )
+        self._genome = os.path.abspath(
+            genomedir
+        )  # avoid potential crash due to location
 
     def _init_vcf(self, parser: pyCRISPRitzArgumentParser, vcfdir: str) -> None:
         if not os.path.exists(vcfdir):
@@ -51,7 +67,9 @@ class AddVariants():
         dircontent = retrieve_vcf_files(vcfdir)
         # dircontent = glob(os.path.join(vcfdir, "*.vcf.gz"))
         if not dircontent:
-            parser.error(f"{vcfdir} does not contain VCF files ('vcf.gz' extension required)")
+            parser.error(
+                f"{vcfdir} does not contain VCF files ('vcf.gz' extension required)"
+            )
         self._vcf = os.path.abspath(vcfdir)  # avoid potential crash due to location
 
     def _init_outdir(self, parser: pyCRISPRitzArgumentParser, outdir: str) -> None:
@@ -68,8 +86,8 @@ class AddVariants():
         indels_genome_dir = os.path.join(outdir, ENRICHED_GENOME_DIRS[1])
         if not os.path.isdir(indels_genome_dir):
             os.mkdir(indels_genome_dir)
-        self._outdir = os.path.abspath(outdir)          
-        
+        self._outdir = os.path.abspath(outdir)
+
     def _init_threads(self, parser: pyCRISPRitzArgumentParser, threads: int) -> None:
         maxthreads = multiprocessing.cpu_count()
         if threads < 0 or threads > maxthreads:
@@ -100,7 +118,7 @@ class AddVariants():
             return self._fasta_vcf_map
         # always trace this error
         raise AttributeError("Fasta - VCF dictionary not yet initialized")
-    
-    
+
+
 def enrich_genome() -> None:
     pass
